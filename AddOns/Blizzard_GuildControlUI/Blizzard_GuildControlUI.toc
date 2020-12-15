@@ -1,0 +1,4 @@
+## Title: Blizzard Guild Control UI
+## LoadOnDemand: 1
+Blizzard_GuildControlUI.xml
+Localization.lua

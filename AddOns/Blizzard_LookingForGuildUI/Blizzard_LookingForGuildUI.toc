@@ -1,0 +1,4 @@
+## Title: Blizzard LookingForGuild UI
+## LoadOnDemand: 1
+Blizzard_LookingForGuildUI.xml
+Localization.lua

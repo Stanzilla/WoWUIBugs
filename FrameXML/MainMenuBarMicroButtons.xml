@@ -1,0 +1,271 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="MainMenuBarMicroButtons.lua"/>
+	<Button name="MainMenuBarMicroButton" inherits="QuickKeybindButtonTemplate" mixin="MainMenuBarMicroButtonMixin" motionScriptsWhileDisabled="true" virtual="true">
+		<Size x="28" y="36"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="$parentFlash" atlas="hud-microbutton-highlightalert" useAtlasSize="true" alphaMode="ADD" parentKey="Flash" hidden="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-2" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter method="OnEnter" inherit="append"/>
+			<OnEnable>
+				self:SetAlpha(1);
+			</OnEnable>
+			<OnDisable>
+				self:SetAlpha(0.5);
+			</OnDisable>
+			<OnLeave inherit="append">
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+	<Button name="CharacterMicroButton" inherits="MainMenuBarMicroButton" mixin="CharacterMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLECHARACTER0" type="string"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="MicroButtonPortrait">
+					<Size x="16" y="22"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-8"/>
+					</Anchors>
+					<TexCoords left="0.2" right="0.8" top="0.0666" bottom="0.9"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method ="OnMouseUp"/>
+			<OnEvent method="OnEvent"/>
+		</Scripts>
+	</Button>
+	<Button name="SpellbookMicroButton" inherits="MainMenuBarMicroButton" mixin="SpellbookMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLESPELLBOOK" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="CharacterMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+		</Scripts>
+	</Button>
+	<Button name="TalentMicroButton" inherits="MainMenuBarMicroButton" mixin="TalentMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLETALENTS" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="SpellbookMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+		</Scripts>
+	</Button>
+	<Button name="AchievementMicroButton" inherits="MainMenuBarMicroButton" mixin="AchievementMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEACHIEVEMENT" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="TalentMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow function="MicroButton_KioskModeDisable" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick method="OnClick" inherit="append"/>
+		</Scripts>
+	</Button>
+	<Button name="QuestLogMicroButton" inherits="MainMenuBarMicroButton" mixin="QuestLogMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEQUESTLOG" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="AchievementMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick method="OnClick" inherit="append"/>
+		</Scripts>
+	</Button>
+	<Button name="GuildMicroButton" inherits="MainMenuBarMicroButton" mixin="GuildMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEGUILDTAB" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="QuestLogMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Frames>
+			<Frame name="$parentTabard" hidden="true">
+				<Size x="28" y="36"/>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture name="$parentBackground" parentKey="background" atlas="hud-microbutton-Guild-Banner" useAtlasSize="true">
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY" textureSubLevel="1">
+						<Texture name="$parentEmblem" parentKey="emblem" file="Interface\GuildFrame\GuildEmblems_01">
+							<Size x="14" y="14"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="NotificationOverlay" frameLevel="100" setAllPoints="true" hidden="true">
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture parentKey="UnreadNotificationIcon" atlas="hud-microbutton-communities-icon-notification">
+							<Size x="18" y="18"/>
+							<Anchors>
+								<Anchor point="CENTER" relativeKey="$parent" relativePoint="TOP" x="0" y="-5"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEvent method="OnEvent"/>
+			<OnShow function="MicroButton_KioskModeDisable" inherit="append"/>
+			<OnClick method="OnClick" inherit="append"/>
+		</Scripts>
+	</Button>
+	<Button name="LFDMicroButton" inherits="MainMenuBarMicroButton" mixin="LFDMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEGROUPFINDER" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="GuildMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad" />
+			<OnShow function="MicroButton_KioskModeDisable" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick method="OnClick" inherit="append"/>
+		</Scripts>
+	</Button>
+	<Button name="CollectionsMicroButton" inherits="MainMenuBarMicroButton" mixin="CollectionMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="lastNumMountsNeedingFanfare" value="0" type="number"/>
+			<KeyValue key="lastNumPetsNeedingFanfare" value="0" type="number"/>
+			<KeyValue key="commandName" value="TOGGLECOLLECTIONS" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="LFDMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow function="MicroButton_KioskModeDisable" inherit="append"/>
+			<OnClick method="OnClick" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+		</Scripts>
+	</Button>
+	<Button name="EJMicroButton" inherits="MainMenuBarMicroButton" mixin="EJMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEENCOUNTERJOURNAL" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="CollectionsMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Frames>
+			<Frame parentKey="NewAdventureNotice" hidden="true">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="8" y="2"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<Texture atlas="adventureguide-microbutton-alert"/>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow" inherit="append"/>
+			<OnHide method="OnHide" inherit="append"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick method="OnClick" inherit="append"/>
+		</Scripts>
+	</Button>
+	<Button name="StoreMicroButton" inherits="MainMenuBarMicroButton" mixin="StoreMicroButtonMixin" parent="UIParent">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="EJMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow function="MicroButton_KioskModeDisable"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick function="ToggleStoreUI"/>
+		</Scripts>
+	</Button>
+	<Button name="MainMenuMicroButton" inherits="MainMenuBarMicroButton" mixin="MainMenuMicroButtonMixin" parent="UIParent">
+		<KeyValues>
+			<KeyValue key="commandName" value="TOGGLEGAMEMENU" type="string"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="StoreMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="MainMenuBarPerformanceBar" file="Interface\MainMenuBar\UI-MainMenuBar-PerformanceBar">
+					<Size x="28" y="58"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="11"/>
+					</Anchors>
+				</Texture>
+				<Texture name="MainMenuBarDownload" file="Interface\BUTTONS\UI-MicroStream-Yellow" hidden="true">
+					<Size x="28" y="28"/>
+					<Anchors>
+						<Anchor point="BOTTOM" relativeTo="MainMenuMicroButton" relativePoint="BOTTOM" x="0" y="7"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnUpdate method="OnUpdate"/>
+			<OnMouseDown method="OnMouseDown"/>
+			<OnMouseUp method="OnMouseUp"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+	<Button name="HelpMicroButton" inherits="MainMenuBarMicroButton" hidden="true">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="EJMicroButton" relativePoint="BOTTOMRIGHT" x="-2" y="0"/>
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="MicroButton" value="HelpMicroButton" type="global"/>
+		</KeyValues>
+		<Scripts>
+			<OnLoad>
+				LoadMicroButtonTextures(self, "MainMenu");
+				self.tooltipText = HELP_BUTTON;
+				self.newbieText = NEWBIE_TOOLTIP_HELP;
+			</OnLoad>
+			<OnClick function="ToggleHelpFrame"/>
+		</Scripts>
+	</Button>
+</Ui>

@@ -1,0 +1,4 @@
+## Title: Blizzard Auth Challenge UI
+## LoadOnDemand: 0
+## AllowLoad: Both
+Blizzard_AuthChallengeUI.xml

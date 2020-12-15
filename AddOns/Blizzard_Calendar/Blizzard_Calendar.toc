@@ -1,0 +1,4 @@
+## Title: Blizzard Calendar
+## LoadOnDemand: 1
+Blizzard_Calendar.xml
+Localization.lua

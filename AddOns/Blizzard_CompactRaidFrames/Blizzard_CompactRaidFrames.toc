@@ -1,0 +1,6 @@
+## Title: Blizzard Compact Raid Frames
+## LoadOnDemand: 0
+Blizzard_CompactRaidFrameReservationManager.lua
+Blizzard_CompactRaidFrameContainer.xml
+Blizzard_CompactRaidFrameManager.xml
+Localization.lua

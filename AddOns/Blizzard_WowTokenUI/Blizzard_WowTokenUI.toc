@@ -1,0 +1,5 @@
+## Title: Blizzard WoW Token UI
+## LoadOnDemand: 0
+..\..\SharedXML\NineSlice.lua
+Blizzard_WowTokenUI.xml
+Blizzard_WowTokenUIInsecure.xml

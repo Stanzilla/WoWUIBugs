@@ -1,0 +1,65 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="SharedMapPoiTemplates.lua"/>
+
+	<Frame name="BaseMapPoiPinTemplate" enableMouseMotion="true" mixin="BaseMapPoiPinMixin" virtual="true">
+		<Size x="32" y="32"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Texture" file="Interface/Minimap/POIIcons">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="BaseHighlightableMapPoiPinTemplate" inherits="BaseMapPoiPinTemplate" virtual="true">
+		<Layers>
+			<Layer level="HIGHLIGHT">
+				<Texture parentKey="HighlightTexture" alphaMode="ADD" file="Interface/Minimap/POIIcons">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Texture"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Texture"/>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0" a="0.4"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="MapPinSupertrackHighlightTemplate" mixin="MapPinSupertrackHighlightMixin" hidden="true" virtual="true">
+		<Size x="1" y="1"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="BackHighlight" atlas="Callings-BackHighlight" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="TopHighlight" atlas="Callings-TopHighlight" useAtlasSize="true" alphaMode="ADD" alpha=".3">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="Expand" alphaMode="ADD" desaturated="true">
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup parentKey="ExpandAndFade" setToFinalAlpha="false" looping="REPEAT">
+				<Alpha childKey="Expand" smoothing="NONE" duration="0.4" order="1" fromAlpha="0" toAlpha="0.3"/>
+				<Scale childKey="Expand" smoothing="NONE" duration="1" order="1" fromScaleX="1" fromScaleY="1" toScaleX="2" toScaleY="2"/>
+
+				<Alpha childKey="Expand" duration="0.4" order="2" fromAlpha="0.3" toAlpha="0"/>
+			</AnimationGroup>
+		</Animations>
+	</Frame>
+</Ui>

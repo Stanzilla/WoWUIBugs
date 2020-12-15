@@ -1,0 +1,4 @@
+## Title: Blizzard Talking Head UI
+## LoadOnDemand: 1
+
+Blizzard_TalkingHeadUI.xml
