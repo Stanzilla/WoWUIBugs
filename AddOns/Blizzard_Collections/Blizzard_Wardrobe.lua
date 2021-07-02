@@ -3017,7 +3017,7 @@ end
 
 function WardrobeCollectionFrameSearchBoxMixin:OnKeyDown(key, ...)
 	if key == WARDROBE_CYCLE_KEY then
-		WardrobeCollectionFramen:OnKeyDown(key, ...);
+		WardrobeCollectionFrame:OnKeyDown(key, ...);
 	end
 end
 
