@@ -18,15 +18,65 @@ InsertNotificationData("ComplaintThankYou_Social", BEHAVIORAL_NOTIFICATION_RESOL
 
 BehavioralMessagingNotificationMixin = {}
 
-function BehavioralMessagingNotificationMixin:Init(data, notificationType)
+function BehavioralMessagingNotificationMixin:Init(data, notificationType, count)
 	self.notificationType = notificationType;
-	self.TitleText:SetText(data.label);
+	self.count = count;
+	self.backgroundsPool = CreateFramePool("Frame", self, "BehaviorMessagingBackgroundTemplate");
+	
 	self.Icon:SetAtlas(data.icon, TextureKitConstants.UseAtlasSize);
+	self:Update();
+end
+
+function BehavioralMessagingNotificationMixin:UpdateText()
+	local data = NotificationData[self.notificationType].notification;
+	
+	if self.count > 1 then
+		self.TitleText:SetText(string.format(AUCTION_MAIL_ITEM_STACK, data.label, self.count));
+	else
+		self.TitleText:SetText(data.label);
+	end
 	
 	local titleWidth, titleHeight = self.TitleText:GetSize();
 	local subtitleWidth, subtitleHeight = self.SubtitleText:GetSize();
 	self:SetWidth(math.max(titleWidth, subtitleWidth) + 50);
 	self:SetHeight(titleHeight + subtitleHeight + 20);
+end
+
+function BehavioralMessagingNotificationMixin:UpdateBackgrounds()
+	self.backgroundsPool:ReleaseAll();
+
+	local frameLevel = self:GetFrameLevel() - 1;
+	local indent = 0;
+	local minAllowed = 1;
+	local maxAllowed = 2;
+	for index = 1, math.max(minAllowed, math.min(self.count, maxAllowed)) do
+		local background = self.backgroundsPool:Acquire();
+		background:SetPoint("TOPLEFT", self, "TOPLEFT", indent, indent); 
+		background:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", indent, indent);
+		background:SetFrameLevel(frameLevel);
+		background:Show();
+		frameLevel = frameLevel - 1;
+		indent = indent - 3;
+	end
+end
+
+function BehavioralMessagingNotificationMixin:Update()
+	self:UpdateText();
+	self:UpdateBackgrounds();
+end
+
+function BehavioralMessagingNotificationMixin:GetCount()
+	return self.count;
+end
+
+function BehavioralMessagingNotificationMixin:Increment()
+	self.count = self.count + 1;
+	self:Update();
+end
+
+function BehavioralMessagingNotificationMixin:Decrement()
+	self.count = self.count - 1;
+	self:Update();
 end
 
 BehavioralMessagingTrayMixin = {};
@@ -37,6 +87,14 @@ function BehavioralMessagingTrayMixin:OnLoad()
 	self.pool = CreateFramePool("Button", self, "BehaviorMessagingNotificationTemplate");
 end
 
+function BehavioralMessagingTrayMixin:FindNotification(notificationType)
+	for notification in self.pool:EnumerateActive() do
+		if notification.notificationType == notificationType then
+			return notification;
+		end
+	end
+end
+			
 function BehavioralMessagingTrayMixin:OnEvent(event, ...)
 	if event == "BEHAVIORAL_NOTIFICATION" then
 		local notificationType, count = ...;
@@ -46,9 +104,13 @@ function BehavioralMessagingTrayMixin:OnEvent(event, ...)
 				BehavioralMessagingDetails:DisplayNotification(data.details, button);
 			end
 
-			for index = 1, count do
-				local notification = self.pool:Acquire();
-				notification:Init(data.notification, notificationType);
+			local notification = self:FindNotification(notificationType);
+			if notification then
+				notification:Increment();
+			else
+				notification = self.pool:Acquire();
+				notification:SetFrameLevel(10);
+				notification:Init(data.notification, notificationType, count);
 				notification:Show();
 				notification:SetScript("OnClick", OnClick);
 			end
@@ -73,10 +135,14 @@ function BehavioralMessagingTrayMixin:EvaluateLayout()
 end
 
 function BehavioralMessagingTrayMixin:OnNotificationAchknowledged(notification)
-	local notificationType = notification.notificationType;
-	self.pool:Release(notification);
+	C_BehavioralMessaging.SendNotificationReceipt(notification.notificationType);
 	
-	C_BehavioralMessaging.SendNotificationReceipt(notificationType);
+	notification:Decrement();
+	if notification:GetCount() == 0 then
+		self.pool:Release(notification);
+	else
+		notification:Update();
+	end
 
 	self:EvaluateLayout();
 end
